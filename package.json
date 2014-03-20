@@ -1,6 +1,6 @@
 {
   "name": "nor-routes-json",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Library to manage routes configuration file",
   "main": "src/routes.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/sendanor/nor-routes-json",
   "dependencies": {
     "nor-debug": ">= 0.1.21 <0.2.0",
-    "nor-is": ">= 0.1.9 <0.2.0",
+    "nor-is": ">= 0.1.10 <0.2.0",
     "nor-fs": ">= 0.1.4 <0.2.0",
     "nor-data": ">= 0.0.3 <0.1.0"
   }
