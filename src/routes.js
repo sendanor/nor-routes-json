@@ -43,47 +43,71 @@ Routes.prototype.update = function(app) {
 	debug.assert(self.items).is('array');
 	debug.assert(app).is('function');
 
-	var paths = {};
+	var _paths = {};
+
 	self.items.forEach(function(route) {
+		debug.assert(route).is('object');
+		debug.assert(route.path).is('string');
+		debug.assert(route.method).is('string');
+
 		var path = route.path;
-		if(!is.object(paths[path])) {
-			paths[path] = {};
+
+		if(!is.object(_paths[path])) {
+			_paths[path] = {};
 		}
-		paths[path][route.method] = route;
+
+		if(_paths[path][route.method] === undefined) {
+			_paths[path][route.method] = route;
+		} else {
+			debug.info("Detected duplicate in routes.json: ", route.method, ' ', route.path);
+			route.duplicate = true;
+		}
 	});
 
 	function _exists(path, method) {
-		return is.object(paths[path]) && is.object(paths[path][method]) ? true : false;
+		debug.assert(path).is('string');
+		debug.assert(method).is('string');
+		return !!( is.object(_paths[path]) && is.object(_paths[path][method]) );
 	}
 
 	debug.assert(app.routes).is('object');
 
 	function capitalize(s) {
+		debug.assert(s).is('string');
 		return s[0].toUpperCase() + s.slice(1);
 	}
 
 	Object.keys(app.routes).forEach(function(method) {
 		debug.assert(app.routes[method]).is('array');
 		app.routes[method].forEach(function(route) {
-			var obj;
-			if(!_exists(route.path, method)) {
-				obj = {
-					'summary': capitalize('' + method + ' ' + route.path),
-					'path': route.path,
-					'method': method,
-					'keys': route.keys,
-					'flags': {
-						'admin': true
-					}
-				};
-				self.changed = true;
-				self.items.push(obj);
-				if(!paths[route.path]) {
-					paths[route.path] = {};
-				}
-				paths[route.path][method] = obj;
-				debug.log("New route added to routes.json:", obj);
+
+			debug.assert(route).is('object');
+			debug.assert(route.path).is('string');
+			debug.assert(route.method).is('string');
+
+			if(_exists(route.path, route.method)) {
+				return;
 			}
+
+			var obj = {
+				'summary': capitalize('' + route.method + ' ' + route.path),
+				'path': route.path,
+				'method': route.method,
+				'keys': route.keys,
+				'flags': {
+					'admin': true
+				},
+				'created': new Date().getTime()
+			};
+
+			self.changed = true;
+			self.items.push(obj);
+
+			if(!_paths[route.path]) {
+				_paths[route.path] = {};
+			}
+			_paths[route.path][route.method] = obj;
+			debug.info("New route added to routes.json: ", route.method, ' ', route.path);
 		});
 	});
 
