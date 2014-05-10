@@ -1,6 +1,6 @@
 {
   "name": "nor-routes-json",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Library to manage routes configuration file",
   "main": "src/routes.js",
   "scripts": {
