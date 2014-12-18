@@ -1,6 +1,6 @@
 {
   "name": "nor-routes-json",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Library to manage routes configuration file",
   "main": "src/routes.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "dependencies": {
     "nor-debug" : ">= 0.1.46 < 0.2.0",
     "nor-is"    : ">= 0.1.15 < 0.2.0",
-    "nor-fs"    : ">= 0.1.11  < 0.2.0",
+    "nor-fs"    : ">= 0.1.12  < 0.2.0",
     "nor-data"  : ">= 0.0.15  < 0.1.0"
   }
 }
